@@ -1,63 +1,43 @@
-import React, { useContext, useState } from "react";
-import "./style.css";
+import React, { useState } from "react";
 import axios from "axios";
-
-// =================================================================
-
+import "./style.css";
 const SignUp = () => {
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+
   const [message, setMessage] = useState("");
+  const [isRegistered, setIsReg] = useState(false);
+
   const addUser = () => {
-    if (!email) {
-      setMessage("please enter your email ");
-      return;
-    } else if (!firstName || !lastName) {
-      setMessage("please enter your firstname and lastname ");
-      return;
-    } else if (!password) {
-      setMessage("please enter your password ");
-      return;
-    }
     axios
       .post("http://localhost:5000/signup/", {
-        firstName,
         lastName,
-
+        firstName,
         email,
         password,
       })
-      .then((result) => {})
+      .then((result) => {
+        setMessage(result.data.message);
+        setIsReg(true);
+      })
       .catch((err) => {
-        console.log(err);
-        setMessage(err.response.data.massage);
+        setMessage(err.response.data.message);
+        setIsReg(false);
       });
+
   };
 
+
   return (
-    <div className="register">
-      Sign Up <br />
-      <input
-        type={"text"}
-        placeholder={"First Name"}
-        onChange={(e) => {
-          setFirstName(e.target.value);
-        }}
-      />
+    <div className="reg">
+      Sign-Up
       <br />
       <input
         type={"text"}
-        placeholder={"Last Name"}
-        onChange={(e) => {
-          setLastName(e.target.value);
-        }}
-      />
-      <br />
-      <input
-        type={"text"}
-        placeholder={"Email"}
+        placeholder={"email"}
         onChange={(e) => {
           setEmail(e.target.value);
         }}
@@ -65,14 +45,30 @@ const SignUp = () => {
       <br />
       <input
         type={"password"}
-        placeholder={"Password"}
+        placeholder={"password"}
         onChange={(e) => {
           setPassword(e.target.value);
         }}
       />
       <br />
-      <button onClick={addUser}>Register</button>
-      <h1> {message}</h1>
+      <input
+        type={"text"}
+        placeholder={"first name"}
+        onChange={(e) => {
+          setFirstName(e.target.value);
+        }}
+      />
+      <br />
+      <input
+        type={"text"}
+        placeholder={"last name"}
+        onChange={(e) => {
+          setLastName(e.target.value);
+        }}
+      />
+      <br />
+      <button onClick={addUser}>Sign Up</button>
+      <p className={isRegistered ? "successful" : "error"}>{message}</p>
     </div>
   );
 };
