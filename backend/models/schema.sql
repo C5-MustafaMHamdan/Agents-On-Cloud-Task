@@ -1,5 +1,5 @@
--- DROP DATABASE AgentsOnCloudTask
--- CREATE DATABASE AgentsOnCloudTask;
+ DROP DATABASE AgentsOnCloudTask;
+ CREATE DATABASE AgentsOnCloudTask;
 USE AgentsOnCloudTask ;
 
 CREATE TABLE users(
@@ -16,6 +16,7 @@ CREATE TABLE items (
     id INT AUTO_INCREMENT NOT NULL,
     title VARCHAR(255),
     description VARCHAR(255),
+    img VARCHAR(255),
     owner_id INT,
     FOREIGN KEY (owner_id) REFERENCES users(id),
     is_deleted TINYINT DEFAULT 0,
