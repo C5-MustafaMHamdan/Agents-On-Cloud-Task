@@ -1,5 +1,8 @@
 const connection = require("../models/db");
 
+
+//this function to 	Add a new item 
+
 const setNewItem = (req, res) => {
   const { title, description, img } = req.body;
   const owner_id = req.token.userId;
@@ -23,6 +26,37 @@ const setNewItem = (req, res) => {
   });
 };
 
+
+//this function to get all items
+
+const getAllItems = (req, res) => {
+    const query = `SELECT * FROM items WHERE is_deleted=0;`;
+    connection.query(query, (err, result) => {
+      if (err) {
+        res.status(500).json({
+          success: false,
+          massage: "server error",
+          err: err,
+        });
+      }
+      res.status(200).json({
+        success: true,
+        massage: "All the items",
+        result: result,
+      });
+    });
+  };
+
+
+
+
+
+
+
+
+
+
 module.exports = {
   setNewItem,
+  getAllItems
 };
