@@ -19,13 +19,13 @@ const signUp = async (req, res) => {
   ];
   connection.query(query, data, (err, result) => {
     if (err) {
-      res.status(409).json({
+     return res.status(409).json({
         success: false,
         massage: "The email already exists",
         err
       });
     }
-    res.status(200).json({
+   return res.status(200).json({
       success: true,
       massage: "Account Created Successfully",
       result
