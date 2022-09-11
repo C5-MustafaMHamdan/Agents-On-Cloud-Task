@@ -3,11 +3,11 @@ const connection = require("../models/db");
 //this function to 	Add a new item
 
 const setNewItem = (req, res) => {
-  const { title, description, img } = req.body;
+  const { title, description, img, price } = req.body;
   const owner_id = req.token.userId;
   console.log(owner_id);
-  const query = `INSERT INTO items (title, description, img,owner_id) VALUES (?,?,?,?);`;
-  const data = [title, description, img, owner_id];
+  const query = `INSERT INTO items (title, description, img, price,owner_id ) VALUES (?,?,?,?,?);`;
+  const data = [title, description, img, price, owner_id];
 
   connection.query(query, data, (err, result) => {
     if (err) {
@@ -75,15 +75,14 @@ const getItemById = (req, res) => {
   });
 };
 
-//this function to delete an item
-
-const deleteItemById = (req, res) => {
+//
+const updateItemById = (req, res) => {
   const id = req.params.id;
   const owner_id = req.token.userId;
-
+  const { title, price } = req.body;
   const query = `SELECT * FROM items WHERE id=? AND is_deleted=0  ;`;
 
-  const data = [id ,owner_id];
+  const data = [id, owner_id];
 
   connection.query(query, data, (err, result) => {
     if (err) {
@@ -99,23 +98,61 @@ const deleteItemById = (req, res) => {
         massage: "The item is Not Found",
       });
     }
- if (result[0].owner_id!=owner_id) { 
-   
-    
-    return res.status(201).json({
-    
-    success: false,
-    massage: `you are not authorized to delete this item`,
+    if (result[0].owner_id != owner_id) {
+      return res.status(201).json({
+        success: false,
+        massage: `you are not authorized to edit this item`,
+      });
+    }
+
+    const query2 = `UPDATE items SET title=?, price=? WHERE id=?;`;
+    const data2 = [title || result[0].title, price || result[0].price, id];
+
+    connection.query(query2, data2, (err, result2) => {
+      res.status(200).json({
+        success: true,
+        massage: `Succeeded to update item with id: ${id}`,
+        result: result2,
+      });
+    });
   });
-    
- }
+};
+
+//this function to delete an item
+
+const deleteItemById = (req, res) => {
+  const id = req.params.id;
+  const owner_id = req.token.userId;
+
+  const query = `SELECT * FROM items WHERE id=? AND is_deleted=0  ;`;
+
+  const data = [id, owner_id];
+
+  connection.query(query, data, (err, result) => {
+    if (err) {
+      return res.status(500).json({
+        success: false,
+        massage: "Server Error",
+        err: err.message,
+      });
+    }
+    if (!result.length) {
+      return res.status(404).json({
+        success: false,
+        massage: "The item is Not Found",
+      });
+    }
+    if (result[0].owner_id != owner_id) {
+      return res.status(201).json({
+        success: false,
+        massage: `you are not authorized to delete this item`,
+      });
+    }
 
     const query2 = `UPDATE items SET is_deleted=1 WHERE   owner_id=?;`;
     const data2 = [owner_id];
 
     connection.query(query2, data2, (err, result2) => {
-        
-      
       res.status(200).json({
         success: true,
         massage: `Succeeded to delete item with id: ${id}`,
@@ -129,5 +166,6 @@ module.exports = {
   setNewItem,
   getAllItems,
   getItemById,
+  updateItemById,
   deleteItemById,
 };

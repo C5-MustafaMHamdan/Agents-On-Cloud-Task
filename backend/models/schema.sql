@@ -18,6 +18,7 @@ CREATE TABLE items (
     description VARCHAR(255),
     img VARCHAR(255),
     owner_id INT,
+    price INT,
     FOREIGN KEY (owner_id) REFERENCES users(id),
     is_deleted TINYINT DEFAULT 0,
     PRIMARY KEY (id)
