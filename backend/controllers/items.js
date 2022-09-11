@@ -162,10 +162,46 @@ const deleteItemById = (req, res) => {
   });
 };
 
+//this function to get all comment about an item 
+
+const getCommentById = (req, res) => {
+  const id = req.params.id;
+  console.log(id);
+  const query = `SELECT * FROM comments WHERE item_id=?`;
+  const data = [id];
+
+  connection.query(query, data, (err, results) => {
+    if (err) {
+      return res.status(500).json({
+        success: false,
+        massage: "Server Error",
+        err: err,
+      });
+    }
+    if (!results.length) {
+     return res.status(404).json({
+        success: false,
+        massage: "The Item Not found",
+      });
+    }
+    return  res.status(200).json({
+      success: true,
+      massage: `The Item ${id}`,
+      results: results,
+    });
+  });
+};
+
+
+
+
+
+
 module.exports = {
   setNewItem,
   getAllItems,
   getItemById,
   updateItemById,
   deleteItemById,
+  getCommentById
 };

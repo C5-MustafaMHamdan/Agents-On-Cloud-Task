@@ -6,7 +6,7 @@ const authentication = require("../middleware/authentication");
 
 const commentRouter = express.Router();
 
-commentRouter.post("/:id",authentication, createNewComment);
+commentRouter.post("/:item_id",authentication, createNewComment);
  
 
 module.exports = commentRouter;
