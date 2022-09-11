@@ -3,7 +3,7 @@ import axios from "axios";
 import "./style.css";
 import { tokenContext } from "../../App";
 import { useNavigate } from "react-router-dom";
-import Dashbord from "../Dashboard";
+import Dashboard from "../Dashboard";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -31,7 +31,7 @@ const Login = () => {
         setToken(localStorage.getItem("token"));
         setIsLoggedIn(true);
 
-        navigate("/dashbord");
+        navigate("/dashboard");
       })
       .catch((err) => {
         console.log(err.response.data.message);
@@ -61,7 +61,7 @@ const Login = () => {
       <br />
       <button onClick={Log}>Login</button>
 
-      {message ? <p className="message">{message}</p> : <Dashbord />}
+      {message ? <p className="message">{message}</p> : <Dashboard />}
     </div>
   );
 };
