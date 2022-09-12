@@ -10,6 +10,7 @@ const Navbar = () => {
 
   const logOut = () => {
     localStorage.removeItem("token");
+    localStorage.removeItem("userId");
     setIsLoggedIn(false);
     setToken("");
   };

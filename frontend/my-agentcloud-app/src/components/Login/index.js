@@ -3,7 +3,7 @@ import axios from "axios";
 import "./style.css";
 import { tokenContext } from "../../App";
 import { useNavigate } from "react-router-dom";
-import Dashboard from "../Dashboard";
+ 
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -29,6 +29,9 @@ const Login = () => {
 
         localStorage.setItem("token", result.data.token);
         setToken(localStorage.getItem("token"));
+        
+        localStorage.setItem("userId", result.data.id);
+        
         setIsLoggedIn(true);
 
         navigate("/dashboard");

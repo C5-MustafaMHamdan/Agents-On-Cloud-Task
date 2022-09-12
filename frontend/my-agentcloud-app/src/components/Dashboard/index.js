@@ -18,9 +18,10 @@ const Dashboard = () => {
           authorization: `Bearer ${token}`,
         },
       })
-      .then((res) => {console.log(res.data.result);
-        setuserId(res.data.userId);
-       
+      .then((res) => {
+        console.log(res.data.result);
+        setuserId(localStorage.getItem("userId"));
+
         setItems(res.data.result);
       })
       .catch((err) => {
@@ -35,6 +36,43 @@ const Dashboard = () => {
   console.log(userID);
   /////////////////////////////////////////////
 
+  const deleteItem = async (id) => {
+    try {
+      await axios.put(`http://localhost:5000/items/${id}`,{},
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },);
+      getallItems();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+
+
+/*async (id) => {
+    try {
+      await axios.put(
+        `http://localhost:5000/items/${id}`,{},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+       
+      );
+      dispatch(removeFromReadingList(id));
+
+      console.log(id);
+    } catch (error) {
+      console.log(error);
+    }
+  };  */
+
+  
+
   return (
     <div className="dash">
       {items &&
@@ -43,6 +81,26 @@ const Dashboard = () => {
             <div key={index}>
               <img className="item-img" src={element.img} />
               <p> {element.title}</p>
+              <p> {element.price+ " "+  "$"}</p>
+              {userID == element.owner_id ? (
+                <>
+                  {" "}
+                  <button
+
+onClick={() => deleteItem(element.id)}
+                  >
+                    delete
+                  </button>
+                  <button
+
+
+                  >
+                    Update
+                  </button>
+                </>
+              ) : (
+                <></>
+              )}
             </div>
           );
         })}
