@@ -1,6 +1,9 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+
 import axios from "axios";
 import "./style.css";
+
 const SignUp = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -10,6 +13,9 @@ const SignUp = () => {
 
   const [message, setMessage] = useState("");
   const [isRegistered, setIsReg] = useState(false);
+
+
+  const navigate = useNavigate();
 
   const addUser = () => {
     axios
@@ -68,7 +74,7 @@ const SignUp = () => {
       />
       <br />
       <button onClick={addUser}>Sign Up</button>
-      <p className={isRegistered ? "successful" : "error"}>{message}</p>
+      <p className={isRegistered ? navigate("/login"): "error"}>{message}</p>
     </div>
   );
 };

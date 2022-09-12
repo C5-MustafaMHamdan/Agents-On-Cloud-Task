@@ -61,7 +61,7 @@ const Login = () => {
       <br />
       <button onClick={Log}>Login</button>
 
-      {message ? <p className="message">{message}</p> : <Dashboard />}
+      {message ? <p className="message">{message}</p> : ""}
     </div>
   );
 };

@@ -5,26 +5,23 @@ import { tokenContext } from "../../App";
 
 const Dashboard = () => {
   const { token, setToken } = useContext(tokenContext);
-  const [articles, setArticles] = useState([]);
+  const [items, setItems] = useState([]);
   const [userID, setuserId] = useState("");
   const [message, setMessage] = useState("");
-  const [newTitle, setnewTitle] = useState("");
-  const [newDescription, setnewDescription] = useState("");
-  const [comment, setComment] = useState("");
 
-  /////////////getallarticles///////////////
+  /////////////getallItems///////////////
 
-  const getallarticles = () => {
+  const getallItems = () => {
     axios
       .get(`http://localhost:5000/items`, {
         headers: {
           authorization: `Bearer ${token}`,
         },
       })
-      .then((res) => {
-        console.log(res.data);
+      .then((res) => {console.log(res.data.result);
         setuserId(res.data.userId);
-        setArticles(res.data.articles);
+       
+        setItems(res.data.result);
       })
       .catch((err) => {
         console.log(err);
@@ -32,18 +29,23 @@ const Dashboard = () => {
   };
 
   useEffect(() => {
-    getallarticles();
+    getallItems();
   }, []);
- 
 
- 
- 
-
+  console.log(userID);
   /////////////////////////////////////////////
 
   return (
     <div className="dash">
-      <h1>this is dashboard</h1>
+      {items &&
+        items.map((element, index) => {
+          return (
+            <div key={index}>
+              <img className="item-img" src={element.img} />
+              <p> {element.title}</p>
+            </div>
+          );
+        })}
     </div>
   );
 };
