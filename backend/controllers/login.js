@@ -22,7 +22,7 @@ const login = (req, res) => {
 
           const token = jwt.sign(payload, secret);
 
-          return res.status(200).json({ token });
+          return res.status(200).json({ token ,id:result[0].id});
         } else {
           return res.status(403).json({
             success: false,

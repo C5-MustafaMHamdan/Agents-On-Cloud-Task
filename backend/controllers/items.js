@@ -11,13 +11,13 @@ const setNewItem = (req, res) => {
 
   connection.query(query, data, (err, result) => {
     if (err) {
-      res.status(500).json({
+      return res.status(500).json({
         success: false,
         massage: "Server error",
         err: err,
       });
     }
-    res.status(200).json({
+    return res.status(200).json({
       success: true,
       massage: "Item uploaded",
       result: result,
@@ -31,13 +31,13 @@ const getAllItems = (req, res) => {
   const query = `SELECT * FROM items WHERE is_deleted=0;`;
   connection.query(query, (err, result) => {
     if (err) {
-      res.status(500).json({
+      return res.status(500).json({
         success: false,
         massage: "server error",
         err: err,
       });
     }
-    res.status(200).json({
+    return res.status(200).json({
       success: true,
       massage: "All the items",
       result: result,
@@ -149,20 +149,20 @@ const deleteItemById = (req, res) => {
       });
     }
 
-    const query2 = `UPDATE items SET is_deleted=1 WHERE   owner_id=?;`;
-    const data2 = [owner_id];
+    const query2 = `UPDATE items SET is_deleted=1 WHERE   id=?;`;
+    const data2 = [id];
 
     connection.query(query2, data2, (err, result2) => {
       res.status(200).json({
         success: true,
         massage: `Succeeded to delete item with id: ${id}`,
-        result: result,
+        result: result2,
       });
     });
   });
 };
 
-//this function to get all comment about an item 
+//this function to get all comment about an item
 
 const getCommentById = (req, res) => {
   const id = req.params.id;
@@ -179,12 +179,12 @@ const getCommentById = (req, res) => {
       });
     }
     if (!results.length) {
-     return res.status(404).json({
+      return res.status(404).json({
         success: false,
         massage: "The Item Not found",
       });
     }
-    return  res.status(200).json({
+    return res.status(200).json({
       success: true,
       massage: `The Item ${id}`,
       results: results,
@@ -192,16 +192,11 @@ const getCommentById = (req, res) => {
   });
 };
 
-
-
-
-
-
 module.exports = {
   setNewItem,
   getAllItems,
   getItemById,
   updateItemById,
   deleteItemById,
-  getCommentById
+  getCommentById,
 };

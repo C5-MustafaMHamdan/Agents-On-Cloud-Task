@@ -24,6 +24,31 @@ CREATE TABLE items (
     PRIMARY KEY (id)
 );
 
+
+CREATE TABLE favorite(
+    id INT AUTO_INCREMENT NOT NULL,
+    user_id INT,
+    item_id INT,
+    FOREIGN KEY (item_id) REFERENCES items(id),
+    FOREIGN KEY (user_id) REFERENCES users(id),
+    is_deleted TINYINT DEFAULT 0,
+    PRIMARY KEY (id)
+);
+
+
+CREATE TABLE cart(
+    id INT AUTO_INCREMENT NOT NULL,
+    user_id INT,
+    item_id INT,
+    FOREIGN KEY (item_id) REFERENCES items(id),
+    FOREIGN KEY (user_id) REFERENCES users(id),
+    is_deleted TINYINT DEFAULT 0,
+    PRIMARY KEY (id)
+);
+
+
+
+
 CREATE TABLE comments(
     id INT AUTO_INCREMENT NOT NULL,
     comment VARCHAR(255),
