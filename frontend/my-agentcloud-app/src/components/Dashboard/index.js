@@ -145,7 +145,7 @@ const Dashboard = () => {
                     className="delete"
                     onClick={() => deleteItem(item.id)}
                   >
-                    X
+               Delete
                   </button>
                   <button
                     className="update"

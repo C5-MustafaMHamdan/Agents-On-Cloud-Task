@@ -18,6 +18,7 @@ const AddNewitem = () => {
   const [description, setDescription] = useState("");
 
   const [price, setPrice] = useState("");
+   const [img, setImg] = useState(""); 
 
   const [message, setMessage] = useState("");
   const [status, setStatus] = useState(false);
@@ -31,6 +32,7 @@ const AddNewitem = () => {
         title,
         description,
         price,
+        img 
       };
       const result = await axios.post("http://localhost:5000/items", item, {
         headers: {
@@ -49,6 +51,16 @@ const AddNewitem = () => {
     }
   };
 
+
+
+
+
+
+
+
+
+
+  
   //===============================================================
 
   useEffect(() => {
@@ -78,7 +90,15 @@ const AddNewitem = () => {
           placeholder="item price here"
           onChange={(e) => setPrice(e.target.value)}
         />
-
+ 
+        <input
+                   
+                    type="text"
+                    placeholder="Image link"
+                    onChange={(e) => {
+                        setImg(e.target.value);
+                    }}
+                  />
         <button>Upload New Item</button>
       </form>
       <br />
