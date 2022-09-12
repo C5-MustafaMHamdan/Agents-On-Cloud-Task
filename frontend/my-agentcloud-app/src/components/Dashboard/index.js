@@ -7,6 +7,12 @@ const Dashboard = () => {
   const { token, setToken } = useContext(tokenContext);
   const [items, setItems] = useState([]);
   const [userID, setuserId] = useState("");
+  const [title, setTitle] = useState("");
+  const [price, setPrice] = useState("");
+
+  const [show, setShow] = useState(false);
+  const [updateBox, setUpdateBox] = useState(false);
+  const [itemId, setItemId] = useState(false);
   const [message, setMessage] = useState("");
 
   /////////////getallItems///////////////
@@ -34,69 +40,101 @@ const Dashboard = () => {
   }, []);
 
   console.log(userID);
-  /////////////////////////////////////////////
 
-  const deleteItem = async (id) => {
+  //////////////////////////////////
+
+  const handleUpdateClick = (item) => {
+    setUpdateBox(!updateBox);
+    setItemId(item.id);
+    setTitle(item.title);
+    setPrice(item.price);
+    if (updateBox) updateItem(item.id);
+  };
+
+  const updateItem = async (id) => {
     try {
-      await axios.put(`http://localhost:5000/items/${id}`,{},
+      await axios.put(`http://localhost:5000/items/${id}/edit`, {
+        title,
+        price,
+      },
       {
         headers: {
           Authorization: `Bearer ${token}`,
         },
-      },);
+      }
+      
+      
+      
+      );
       getallItems();
     } catch (error) {
       console.log(error);
     }
   };
 
+  /////////////////////////////////////////////
 
-
-/*async (id) => {
+  const deleteItem = async (id) => {
     try {
       await axios.put(
-        `http://localhost:5000/items/${id}`,{},
+        `http://localhost:5000/items/${id}`,
+        {},
         {
           headers: {
             Authorization: `Bearer ${token}`,
           },
-        },
-       
+        }
       );
-      dispatch(removeFromReadingList(id));
-
-      console.log(id);
+      getallItems();
     } catch (error) {
       console.log(error);
     }
-  };  */
+  };
 
-  
+  //////////////////
 
   return (
     <div className="dash">
       {items &&
-        items.map((element, index) => {
+        items.map((item, index) => {
           return (
             <div key={index}>
-              <img className="item-img" src={element.img} />
-              <p> {element.title}</p>
-              <p> {element.price+ " "+  "$"}</p>
-              {userID == element.owner_id ? (
+              <img className="item-img" src={item.img} />
+              <p> {item.title}</p>
+              <p> {item.price + " " + "$"}</p>
+              {userID == item.owner_id ? (
                 <>
-                  {" "}
-                  <button
+                 
+                 {updateBox && itemId === item.id && (
+                  <form>
+                    <br />
+                    <input
+                      type="text"
+                      defaultValue={item.title}
+                      placeholder="item title here"
+                      onChange={(e) => setTitle(e.target.value)}
+                    />
+                    <br />
 
-onClick={() => deleteItem(element.id)}
-                  >
-                    delete
-                  </button>
-                  <button
-
-
-                  >
-                    Update
-                  </button>
+                    <input
+                      placeholder="item price here"
+                      defaultValue={item.price}
+                      onChange={(e) => setPrice(e.target.value)}
+                     />
+                  </form>
+                )}
+                <button
+                  className="delete"
+                  onClick={() => deleteItem(item.id)}
+                >
+                  X
+                </button>
+                <button
+                  className="update"
+                  onClick={() => handleUpdateClick(item)}
+                >
+                  Update
+                </button>
                 </>
               ) : (
                 <></>
