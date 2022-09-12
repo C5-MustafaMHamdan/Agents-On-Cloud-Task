@@ -51,6 +51,30 @@ console.log(data);
   };
 
 
+////////////////////////////////////
+
+const removeFavorite = (req, res) => {
+    const id = req.params.id;
+    const userId = req.token.userId;
+  
+    const query = `UPDATE favorite SET is_deleted=1 WHERE  user_id=? AND item_id=?;`;
+    const data = [userId, id];
+    connection.query(query, data, (err, result) => {
+      if (err) {
+        return res.status(500).json({
+          success: false,
+          massage: "Server error",
+          err: err,
+        });
+      }
+      return res.status(200).json({
+        success: true,
+        massage: `item has been removed from favorite `,
+        result: result,
+      });
+    });
+  };
+  
 
 
 
@@ -58,5 +82,4 @@ console.log(data);
 
 
 
-
-module.exports = { addToFavorite ,getAllFavorite};
+module.exports = { addToFavorite ,getAllFavorite ,removeFavorite};
