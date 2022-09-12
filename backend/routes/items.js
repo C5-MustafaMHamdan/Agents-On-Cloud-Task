@@ -5,7 +5,7 @@ const { setNewItem ,getAllItems,getItemById ,updateItemById,deleteItemById,getCo
 
 
 const {addToFavorite} =require("../controllers/favorite")
-
+const {addToCart} =require("../controllers/cart")
 
 const authentication = require("../middleware/authentication");
 
@@ -20,4 +20,7 @@ itemRouter.get("/comments/:id", getCommentById);
 
 
 itemRouter.post("/favorite/:item_id", authentication,addToFavorite);
+
+
+itemRouter.post("/cart/:item_id", authentication,addToCart);
  module.exports = itemRouter;
