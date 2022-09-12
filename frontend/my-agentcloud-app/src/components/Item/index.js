@@ -35,7 +35,7 @@ const ItemInfo = () => {
         info.map((detail, index) => {
           return (
             <div key={index}>
-              <img   src={detail.img} />
+              <img className="img-detail" src={detail.img} />
               <p> {detail.title}</p>
               <p> {detail.price + " " + "$"}</p>
               <p> {detail.description}</p>

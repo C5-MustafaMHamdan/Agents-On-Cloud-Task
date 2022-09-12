@@ -19,7 +19,9 @@ const Navbar = () => {
       {isLoggedIn ? (
         <div style={{ display: "flex", gap: "20px" }}>
           <Link to="/dashboard/">Dashboard</Link>
-
+          <Link className="Link" to="/newItem">
+              Add New Item
+            </Link>
           <Link to="/login" onClick={logOut}>
             logout
           </Link>
