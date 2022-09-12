@@ -1,9 +1,22 @@
 import React, { useState, useContext, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+
 import axios from "axios";
 import "./style.css";
 import { tokenContext } from "../../App";
 
 const Dashboard = () => {
+
+  const navigate = useNavigate();
+
+
+  const itemDetails = (item) => {
+    console.log(item);
+
+    navigate(`/details/${item.id}`);
+  };
+
+
   const { token, setToken } = useContext(tokenContext);
   const [items, setItems] = useState([]);
   const [userID, setuserId] = useState("");
@@ -53,18 +66,17 @@ const Dashboard = () => {
 
   const updateItem = async (id) => {
     try {
-      await axios.put(`http://localhost:5000/items/${id}/edit`, {
-        title,
-        price,
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
+      await axios.put(
+        `http://localhost:5000/items/${id}/edit`,
+        {
+          title,
+          price,
         },
-      }
-      
-      
-      
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       getallItems();
     } catch (error) {
@@ -99,42 +111,48 @@ const Dashboard = () => {
         items.map((item, index) => {
           return (
             <div key={index}>
-              <img className="item-img" src={item.img} />
+              <img className="item-img" src={item.img} 
+               onClick={() => {
+                itemDetails(item);
+              }}
+              
+              
+              
+              />
               <p> {item.title}</p>
               <p> {item.price + " " + "$"}</p>
               {userID == item.owner_id ? (
                 <>
-                 
-                 {updateBox && itemId === item.id && (
-                  <form>
-                    <br />
-                    <input
-                      type="text"
-                      defaultValue={item.title}
-                      placeholder="item title here"
-                      onChange={(e) => setTitle(e.target.value)}
-                    />
-                    <br />
+                  {updateBox && itemId === item.id && (
+                    <form>
+                      <br />
+                      <input
+                        type="text"
+                        defaultValue={item.title}
+                        placeholder="item title here"
+                        onChange={(e) => setTitle(e.target.value)}
+                      />
+                      <br />
 
-                    <input
-                      placeholder="item price here"
-                      defaultValue={item.price}
-                      onChange={(e) => setPrice(e.target.value)}
-                     />
-                  </form>
-                )}
-                <button
-                  className="delete"
-                  onClick={() => deleteItem(item.id)}
-                >
-                  X
-                </button>
-                <button
-                  className="update"
-                  onClick={() => handleUpdateClick(item)}
-                >
-                  Update
-                </button>
+                      <input
+                        placeholder="item price here"
+                        defaultValue={item.price}
+                        onChange={(e) => setPrice(e.target.value)}
+                      />
+                    </form>
+                  )}
+                  <button
+                    className="delete"
+                    onClick={() => deleteItem(item.id)}
+                  >
+                    X
+                  </button>
+                  <button
+                    className="update"
+                    onClick={() => handleUpdateClick(item)}
+                  >
+                    Update
+                  </button>
                 </>
               ) : (
                 <></>
